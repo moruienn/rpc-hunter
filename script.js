@@ -4,20 +4,15 @@ const scoreBoard = document.getElementById('score-board');
 const countdown = document.getElementById('countdown');
 const gameOver = document.getElementById('game-over');
 const ccc1 = document.getElementById('ccc1');
-const refreshButton = document.getElementById('refresh-button');
+const refreshButton = document.getElementById('refresh-button'); // Refresh butonunu tanımla
 const footerText = document.getElementById('footer-text');
-const backgroundMusic = document.getElementById('background-music');
 let score = 0;
 let timeLeft = 60;
 
-// Ekran yüksekliğini ayarla
-function resizeGameContainer() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.style.height = `${window.innerHeight}px`;
-}
-
-window.addEventListener('load', resizeGameContainer);
-window.addEventListener('resize', resizeGameContainer);
+// Gezegen hızı ve artış ayarları
+let planetSpeed = 3;
+const speedIncreaseInterval = 3000;
+const speedIncrement = 0.5;
 
 // Geri sayım fonksiyonu
 function startCountdown() {
@@ -64,7 +59,7 @@ function createPlanet() {
 
     let planetInterval = setInterval(() => {
         const planetTop = parseInt(planet.style.top) || 0;
-        planet.style.top = `${planetTop + 2}px`;
+        planet.style.top = `${planetTop + planetSpeed}px`;
 
         if (planetTop > window.innerHeight) {
             planet.remove();
@@ -121,12 +116,14 @@ function fireBullet() {
 
 document.addEventListener('click', fireBullet);
 
+// Gezegen hızını artırma fonksiyonu
+function increasePlanetSpeed() {
+    planetSpeed += speedIncrement;
+    console.log(`Gezegen hızı arttı: ${planetSpeed}`);
+}
+
+// Belirli aralıklarla hızı artır
+setInterval(increasePlanetSpeed, speedIncreaseInterval);
+
 // Geri sayımı başlat
 startCountdown();
-
-// Müziği başlat
-document.addEventListener('click', () => {
-    if (backgroundMusic.paused) {
-        backgroundMusic.play();
-    }
-});
